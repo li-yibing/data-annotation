@@ -4,7 +4,6 @@
 import os
 import cv2
 import gradio as gr
-import zipfile
 
 
 def extract_frames(video_path, output_folder, frame_skip, prefix):
@@ -14,14 +13,16 @@ def extract_frames(video_path, output_folder, frame_skip, prefix):
     # 打开视频文件
     video_capture = cv2.VideoCapture(video_path)
     success, image = video_capture.read()
+    index = 0
     count = 0
 
     # 提取帧并保存为图像文件
     while success:
         if count % frame_skip == 0:  # 跳过间隔帧数
-            frame_name = f"{prefix}_{str(count).zfill(6)}.jpg"
+            frame_name = f"{prefix}_{str(index).zfill(8)}.jpg"
             frame_path = os.path.join(output_folder, frame_name)
             cv2.imwrite(frame_path, image)
+            index += 1
         success, image = video_capture.read()
         count += 1
 
@@ -35,7 +36,7 @@ def extract_frames(video_path, output_folder, frame_skip, prefix):
 # Gradio界面函数
 def video_to_frames(video_file, output_folder, frame_skip, prefix):
     # 从视频文件路径中获取文件名（不包含扩展名）
-    video_name = os.path.splitext(os.path.basename(video_file.name))[0]
+    video_name = os.path.splitext(os.path.basename(video_file))[0]
     # 构建输出文件夹路径
     output_folder = os.path.join(os.path.dirname(output_folder), video_name)
     # 提取帧并返回路径
@@ -49,7 +50,7 @@ with gr.Blocks(title="视频转换为图像") as demo:
     gr.Markdown("📌 本工具将视频转换为图像，并提供下载压缩包。")
     with gr.Row():
         with gr.Column():
-            block_video_file = gr.File(label="选择视频文件")
+            block_video_file = gr.Text(label="选择视频文件")
             block_output_folder = gr.Textbox(label="选择保存路径", value="/Users/ybli/Pictures/images/")
             block_frame_skip = gr.Number(label="间隔帧数", value=10, step=1)
             block_prefix = gr.Textbox(label="命名前缀", value="frame", info="图像文件的命名前缀")
@@ -74,4 +75,4 @@ with gr.Blocks(title="视频转换为图像") as demo:
         [block_output_folder],
     )
 
-demo.launch(server_name="0.0.0.0", share=True)
+demo.launch(server_name="127.0.0.1", share=True)
