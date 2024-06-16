@@ -4,6 +4,7 @@
 import os
 import gradio as gr
 
+
 def rename_files(folder_path, prefix):
     # 获取文件夹中的所有文件
     files = os.listdir(folder_path)
@@ -16,15 +17,17 @@ def rename_files(folder_path, prefix):
     # 遍历所有目标文件
     for i, file in enumerate(target_files):
         # 构建新的文件名
-        new_name = f"{prefix}_{str(i+1).zfill(8)}{os.path.splitext(file)[1]}"
+        new_name = f"{prefix}_{str(i + 1).zfill(8)}{os.path.splitext(file)[1]}"
         # 重命名文件
         os.rename(os.path.join(folder_path, file), os.path.join(folder_path, new_name))
 
     return "重命名完成"
 
+
 def interface(folder_path, prefix):
     rename_files(folder_path, prefix)
     return "文件重命名完成"
+
 
 iface = gr.Interface(fn=interface, inputs=["text", "text"], outputs="text")
 iface.launch()

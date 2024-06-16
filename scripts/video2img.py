@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+视频转图像，支持设置间隔帧数与文件命名前缀
+"""
 
 import os
 import cv2
@@ -7,6 +10,7 @@ import gradio as gr
 
 
 def extract_frames(video_path, output_folder, frame_skip, prefix):
+    """"""
     # 创建输出文件夹，如果不存在的话
     os.makedirs(output_folder, exist_ok=True)
 
@@ -47,7 +51,7 @@ def video_to_frames(video_file, output_folder, frame_skip, prefix):
 
 
 with gr.Blocks(title="视频转换为图像") as demo:
-    gr.Markdown("📌 本工具将视频转换为图像，并提供下载压缩包。")
+    gr.Markdown("📌 本工具将视频转换为图像")
     with gr.Row():
         with gr.Column():
             block_video_file = gr.Text(label="选择视频文件")
@@ -70,9 +74,12 @@ with gr.Blocks(title="视频转换为图像") as demo:
         [
             [
                 "/Users/ybli/Pictures/images/",
+                "/Users/ybli/Desktop/"
             ],
         ],
         [block_output_folder],
     )
 
-demo.launch(server_name="127.0.0.1", share=True)
+
+if __name__ == "__main__":
+    demo.launch(server_name="127.0.0.1", share=True)

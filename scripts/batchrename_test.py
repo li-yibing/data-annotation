@@ -4,6 +4,7 @@ import logging
 # 设置日志级别和格式
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def rename_files(folder_path, prefix):
     # 获取文件夹中的所有文件
     try:
@@ -26,7 +27,7 @@ def rename_files(folder_path, prefix):
         xml_file = xml_files[i]
 
         # 构建新的文件名
-        new_name = f"{prefix}_{str(i+1).zfill(8)}"
+        new_name = f"{prefix}_{str(i + 1).zfill(8)}"
 
         # 重命名.jpg文件
         try:
@@ -45,6 +46,7 @@ def rename_files(folder_path, prefix):
             return f"Error renaming file {xml_file}"
 
     return "重命名完成"
+
 
 folder_path = r"D:\数据集\项目\Tank Detector.v1i.voc\test"
 prefix = "ABC"
