@@ -51,7 +51,7 @@ def check_txt(dataset_path, nc=2):
     remove_flag = False
     for root, dirs, files in os.walk(dataset_path):
         for file in files:  # 检查文件扩展名是否为.txt
-            if file.endswith(".txt"): # 读取txt文件
+            if file.endswith(".txt"):  # 读取txt文件
                 txt_file = os.path.join(root, file)
                 with open(txt_file, 'r') as f:
                     lines = f.readlines()
@@ -68,7 +68,7 @@ def check_txt(dataset_path, nc=2):
                     logger.info(f"删除{file}")
                     remove_flag = False
 
+
 if __name__ == "__main__":
     check_xml("C:/Users/ybli/Desktop/datasets/label")
     # check_txt("C:/Users/ybli/Desktop/data-4/datasets/labels/val")
-
