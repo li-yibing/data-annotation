@@ -7,6 +7,7 @@ import gradio as gr
 from scripts.video2img import video_to_frames
 from scripts.imgnolabel import check_and_delete_images
 from scripts.labelnoimg import check_and_delete_labels
+from scripts.batchrename import rename_files
 
 
 with gr.Blocks(title="数据集处理") as demo:
@@ -50,7 +51,6 @@ with gr.Blocks(title="数据集处理") as demo:
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=check_and_delete_images, inputs=filename, outputs=result)
 
-
     with gr.Tab(label="删除多余标签"):
         gr.Markdown("## 删除多余标签")
         with gr.Row():
@@ -59,5 +59,15 @@ with gr.Blocks(title="数据集处理") as demo:
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=check_and_delete_labels, inputs=filename, outputs=result)
+
+    with gr.Tab(label="批量重命名"):
+        gr.Markdown("## 批量重命名")
+        with gr.Row():
+            filename = gr.Text(label="数据集文件夹")
+            prefix = gr.Text(label="前缀")
+            result = gr.Text(label="处理结果", show_label=True, visible=True)
+        with gr.Row():
+            predict_button = gr.Button(value="处理", variant='primary')
+        predict_button.click(fn=rename_files, inputs=[filename, prefix], outputs=result)
 
 demo.launch(server_name="127.0.0.1", share=True)
