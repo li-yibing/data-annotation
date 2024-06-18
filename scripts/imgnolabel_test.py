@@ -1,8 +1,6 @@
 import os
-import logging
 
-# 设置日志级别和格式
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+from loguru import logger
 
 
 def check_and_delete_images(folder_path):
@@ -10,7 +8,7 @@ def check_and_delete_images(folder_path):
     try:
         files = os.listdir(folder_path)
     except Exception as e:
-        logging.error(f"Error reading directory: {e}")
+        logger.error(f"Error reading directory: {e}")
         return "Error reading directory"
 
     # 获取所有.jpg文件
@@ -26,9 +24,9 @@ def check_and_delete_images(folder_path):
             # 如果不存在，删除.jpg文件
             try:
                 os.remove(os.path.join(folder_path, jpg_file))
-                logging.info(f"Deleted {jpg_file}")
+                logger.info(f"Deleted {jpg_file}")
             except Exception as e:
-                logging.error(f"Error deleting file {jpg_file}: {e}")
+                logger.error(f"Error deleting file {jpg_file}: {e}")
                 return f"Error deleting file {jpg_file}"
 
     return "处理完成"

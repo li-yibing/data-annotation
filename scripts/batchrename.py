@@ -1,9 +1,6 @@
 import os
-import logging
 import xml.etree.ElementTree as ET
-
-# 设置日志级别和格式
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+from loguru import logger
 
 
 def rename_files(folder_path, prefix):
@@ -11,7 +8,7 @@ def rename_files(folder_path, prefix):
     try:
         files = os.listdir(folder_path)
     except Exception as e:
-        logging.error(f"Error reading directory: {e}")
+        logger.error(f"Error reading directory: {e}")
         return "Error reading directory"
 
     # 获取所有.jpg, .jpeg, .png和.xml文件
@@ -19,7 +16,7 @@ def rename_files(folder_path, prefix):
     xml_files = sorted([file for file in files if file.endswith('.xml')])
 
     if len(image_files) != len(xml_files):
-        logging.error("The number of image files does not match the number of .xml files.")
+        logger.error("The number of image files does not match the number of .xml files.")
         return "Error: The number of image files does not match the number of .xml files."
 
     # 遍历所有.jpg和.xml文件，从1开始计数
@@ -33,9 +30,9 @@ def rename_files(folder_path, prefix):
         try:
             new_image_path = os.path.join(folder_path, new_name + ext)
             os.rename(os.path.join(folder_path, image_file), new_image_path)
-            logging.info(f"Renamed {image_file} to {new_name + ext}")
+            logger.info(f"Renamed {image_file} to {new_name + ext}")
         except Exception as e:
-            logging.error(f"Error renaming file {image_file}: {e}")
+            logger.error(f"Error renaming file {image_file}: {e}")
             return f"Error renaming file {image_file}"
 
         # 重命名.xml文件
@@ -53,9 +50,9 @@ def rename_files(folder_path, prefix):
             tree.write(os.path.join(folder_path, new_name + '.xml'))
 
             os.remove(os.path.join(folder_path, xml_file))
-            logging.info(f"Renamed {xml_file} to {new_name + '.xml'}")
+            logger.info(f"Renamed {xml_file} to {new_name + '.xml'}")
         except Exception as e:
-            logging.error(f"Error renaming file {xml_file}: {e}")
+            logger.error(f"Error renaming file {xml_file}: {e}")
             return f"Error renaming file {xml_file}"
 
     return f"重命名完成,共{len(image_files)}条数据"

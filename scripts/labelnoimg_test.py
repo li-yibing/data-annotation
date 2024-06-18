@@ -1,8 +1,5 @@
 import os
-import logging
-
-# 设置日志级别和格式
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+from loguru import logger
 
 
 def check_and_delete_labels(folder_path):
@@ -10,7 +7,7 @@ def check_and_delete_labels(folder_path):
     try:
         files = os.listdir(folder_path)
     except Exception as e:
-        logging.error(f"Error reading directory: {e}")
+        logger.error(f"Error reading directory: {e}")
         return "Error reading directory"
 
     # 获取所有.xml文件
@@ -26,9 +23,9 @@ def check_and_delete_labels(folder_path):
             # 如果不存在，删除.xml文件
             try:
                 os.remove(os.path.join(folder_path, xml_file))
-                logging.info(f"Deleted {xml_file}")
+                logger.info(f"Deleted {xml_file}")
             except Exception as e:
-                logging.error(f"Error deleting file {xml_file}: {e}")
+                logger.error(f"Error deleting file {xml_file}: {e}")
                 return f"Error deleting file {xml_file}"
 
     return "处理完成"
