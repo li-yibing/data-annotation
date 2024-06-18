@@ -1,5 +1,6 @@
 import os
 import logging
+import xml.etree.ElementTree as ET
 
 # 设置日志级别和格式
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -39,8 +40,19 @@ def rename_files(folder_path, prefix):
 
         # 重命名.xml文件
         try:
-            new_xml_path = os.path.join(folder_path, new_name + '.xml')
-            os.rename(os.path.join(folder_path, xml_file), new_xml_path)
+            tree = ET.parse(os.path.join(folder_path, xml_file))
+            root = tree.getroot()
+
+            # 修改<filename>和<path>标签的值
+            for filename in root.iter('filename'):
+                filename.text = new_name + ext
+            for path in root.iter('path'):
+                path.text = new_name + ext
+
+            # 保存修改后的.xml文件
+            tree.write(os.path.join(folder_path, new_name + '.xml'))
+
+            os.remove(os.path.join(folder_path, xml_file))
             logging.info(f"Renamed {xml_file} to {new_name + '.xml'}")
         except Exception as e:
             logging.error(f"Error renaming file {xml_file}: {e}")
