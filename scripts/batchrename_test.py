@@ -59,6 +59,7 @@ def rename_files(folder_path, prefix):
 
     return "重命名完成"
 
+# 手动改写 名字和标签
 folder_path = r"D:\数据集\项目\Tank Detector.v1i.voc\test"
 prefix = "ABC"
 result = rename_files(folder_path, prefix)
