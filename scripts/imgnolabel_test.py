@@ -4,6 +4,7 @@ import logging
 # 设置日志级别和格式
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def check_and_delete_images(folder_path):
     # 获取文件夹中的所有文件
     try:
@@ -31,6 +32,7 @@ def check_and_delete_images(folder_path):
                 return f"Error deleting file {jpg_file}"
 
     return "处理完成"
+
 
 folder_path = r"C:\Users\zhaotong\Desktop\img_test"
 result = check_and_delete_images(folder_path)

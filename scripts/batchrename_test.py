@@ -59,7 +59,7 @@ def rename_files(folder_path, prefix):
 
     return "重命名完成"
 
-folder_path = r"D:\labelimg_v1.8.1\labelimg_v1.8.1\ShiBing.v2i.voc\train"
-prefix = "ShiBing"
+folder_path = r"D:\数据集\项目\Tank Detector.v1i.voc\test"
+prefix = "ABC"
 result = rename_files(folder_path, prefix)
 print(result)

@@ -4,6 +4,7 @@ import logging
 # 设置日志级别和格式
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def check_and_delete_labels(folder_path):
     # 获取文件夹中的所有文件
     try:
@@ -31,6 +32,7 @@ def check_and_delete_labels(folder_path):
                 return f"Error deleting file {xml_file}"
 
     return "处理完成"
+
 
 folder_path = r"D:\数据集\项目\同步的数据集\火炮车\HuoPaoChe.v4i.voc\train"
 result = check_and_delete_labels(folder_path)
