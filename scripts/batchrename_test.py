@@ -1,5 +1,6 @@
 import os
 import logging
+import xml.etree.ElementTree as ET
 
 # 设置日志级别和格式
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -26,7 +27,7 @@ def rename_files(folder_path, prefix):
         xml_file = xml_files[i]
 
         # 构建新的文件名
-        new_name = f"{prefix}_{str(i+1).zfill(8)}"
+        new_name = f"{prefix}_{str(i+1+2775).zfill(8)}"
 
         # 重命名.jpg文件
         try:
@@ -38,7 +39,19 @@ def rename_files(folder_path, prefix):
 
         # 重命名.xml文件
         try:
-            os.rename(os.path.join(folder_path, xml_file), os.path.join(folder_path, new_name + '.xml'))
+            tree = ET.parse(os.path.join(folder_path, xml_file))
+            root = tree.getroot()
+
+            # 修改<filename>和<path>标签的值
+            for filename in root.iter('filename'):
+                filename.text = new_name + '.jpg'
+            for path in root.iter('path'):
+                path.text = new_name + '.jpg'
+
+            # 保存修改后的.xml文件
+            tree.write(os.path.join(folder_path, new_name + '.xml'))
+
+            os.remove(os.path.join(folder_path, xml_file))
             logging.info(f"Renamed {xml_file} to {new_name + '.xml'}")
         except Exception as e:
             logging.error(f"Error renaming file {xml_file}: {e}")
@@ -46,7 +59,7 @@ def rename_files(folder_path, prefix):
 
     return "重命名完成"
 
-folder_path = r"D:\数据集\项目\Tank Detector.v1i.voc\test"
-prefix = "ABC"
+folder_path = r"D:\labelimg_v1.8.1\labelimg_v1.8.1\ShiBing.v2i.voc\train"
+prefix = "ShiBing"
 result = rename_files(folder_path, prefix)
 print(result)
