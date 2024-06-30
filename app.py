@@ -8,6 +8,8 @@ from scripts.video2img import video_to_frames
 from scripts.imgnolabel import check_and_delete_images
 from scripts.labelnoimg import check_and_delete_labels
 from scripts.batchrename import rename_files
+from scripts.cls_count import count_labels
+from scripts.rename_labels import rename_labels
 
 
 with gr.Blocks(title="数据集处理") as demo:
@@ -69,5 +71,25 @@ with gr.Blocks(title="数据集处理") as demo:
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=rename_files, inputs=[filename, prefix], outputs=result)
+
+    with gr.Tab(label="统计类别名称与数量"):
+        gr.Markdown("## 统计类别名称与数量")
+        with gr.Row():
+            filename = gr.Text(label="数据集文件夹")
+            result = gr.Text(label="统计结果", show_label=True, visible=True)
+        with gr.Row():
+            predict_button = gr.Button(value="处理", variant='primary')
+        predict_button.click(fn=count_labels, inputs=filename, outputs=result)
+
+    with gr.Tab(label="重命名标签名称"):
+        gr.Markdown("## 重命名标签名称")
+        with gr.Row():
+            filename = gr.Text(label="数据集文件夹")
+            src_name = gr.Text(label="原始标签名称")
+            det_name = gr.Text(label="目标标签名称")
+            result = gr.Text(label="处理结果", show_label=True, visible=True)
+        with gr.Row():
+            predict_button = gr.Button(value="处理", variant='primary')
+        predict_button.click(fn=rename_labels, inputs=[filename, src_name, det_name], outputs=result)
 
 demo.launch(server_name="127.0.0.1", share=True)
