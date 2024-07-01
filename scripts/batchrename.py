@@ -1,19 +1,29 @@
 import os
 import xml.etree.ElementTree as ET
 from loguru import logger
+import random
 
 
-def rename_files(folder_path, prefix):
+def rename_files(folder_path, prefix, shuffle=False):
     # 获取文件夹中的所有文件
     try:
         files = os.listdir(folder_path)
     except Exception as e:
-        logger.error(f"Error reading directory: {e}")
-        return "Error reading directory"
-
-    # 获取所有.jpg, .jpeg, .png和.xml文件
-    image_files = sorted([file for file in files if file.endswith(('.jpg', '.jpeg', '.png'))])
-    xml_files = sorted([file for file in files if file.endswith('.xml')])
+        logger.error(f"读取文件夹错误: {e}")
+        return "读取文件夹错误"
+    if shuffle:
+        logger.debug("打乱数据顺序")
+        # 使用列表推导式筛选出所有图像文件和XML文件
+        image_files = [file for file in files if file.endswith(('.jpg', '.jpeg', '.png'))]
+        xml_files = [file for file in files if file.endswith('.xml')]
+        # 随机打乱图像文件列表
+        random.shuffle(image_files)
+        # 根据图像文件的新顺序，创建一个新的XML文件列表
+        xml_files = [xml_files[image_files.index(image)] for image in image_files]
+    else:
+        # 获取所有.jpg, .jpeg, .png和.xml文件
+        image_files = sorted([file for file in files if file.endswith(('.jpg', '.jpeg', '.png'))])
+        xml_files = sorted([file for file in files if file.endswith('.xml')])
 
     if len(image_files) != len(xml_files):
         logger.error("The number of image files does not match the number of .xml files.")

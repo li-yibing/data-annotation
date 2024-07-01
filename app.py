@@ -47,8 +47,10 @@ with gr.Blocks(title="数据集处理") as demo:
     with gr.Tab(label="删除多余图像"):
         gr.Markdown("## 删除多余图像")
         with gr.Row():
-            filename = gr.Text(label="数据集文件夹")
-            result = gr.Text(label="处理结果", show_label=True, visible=True)
+            with gr.Column():
+                filename = gr.Text(label="数据集文件夹")
+            with gr.Column():
+                result = gr.Text(label="处理结果", show_label=True, visible=True)
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=check_and_delete_images, inputs=filename, outputs=result)
@@ -56,8 +58,10 @@ with gr.Blocks(title="数据集处理") as demo:
     with gr.Tab(label="删除多余标签"):
         gr.Markdown("## 删除多余标签")
         with gr.Row():
-            filename = gr.Text(label="数据集文件夹")
-            result = gr.Text(label="处理结果", show_label=True, visible=True)
+            with gr.Column():
+                filename = gr.Text(label="数据集文件夹")
+            with gr.Column():
+                result = gr.Text(label="处理结果", show_label=True, visible=True)
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=check_and_delete_labels, inputs=filename, outputs=result)
@@ -65,9 +69,12 @@ with gr.Blocks(title="数据集处理") as demo:
     with gr.Tab(label="批量重命名"):
         gr.Markdown("## 批量重命名")
         with gr.Row():
-            filename = gr.Text(label="数据集文件夹")
-            prefix = gr.Text(label="前缀")
-            result = gr.Text(label="处理结果", show_label=True, visible=True)
+            with gr.Column():
+                filename = gr.Text(label="数据集文件夹")
+                prefix = gr.Text(label="文件名前缀")
+                shuffle = gr.Checkbox(label="乱序", value=False)
+            with gr.Column():
+                result = gr.Text(label="处理结果", show_label=True, visible=True)
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=rename_files, inputs=[filename, prefix], outputs=result)
@@ -75,8 +82,10 @@ with gr.Blocks(title="数据集处理") as demo:
     with gr.Tab(label="统计类别名称与数量"):
         gr.Markdown("## 统计类别名称与数量")
         with gr.Row():
-            filename = gr.Text(label="数据集文件夹")
-            result = gr.Text(label="统计结果", show_label=True, visible=True)
+            with gr.Column():
+                filename = gr.Text(label="数据集文件夹")
+            with gr.Column():
+                result = gr.Text(label="统计结果", show_label=True, visible=True)
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=count_labels, inputs=filename, outputs=result)
@@ -84,12 +93,14 @@ with gr.Blocks(title="数据集处理") as demo:
     with gr.Tab(label="重命名标签名称"):
         gr.Markdown("## 重命名标签名称")
         with gr.Row():
-            filename = gr.Text(label="数据集文件夹")
-            src_name = gr.Text(label="原始标签名称")
-            det_name = gr.Text(label="目标标签名称")
-            result = gr.Text(label="处理结果", show_label=True, visible=True)
+            with gr.Column():
+                filename = gr.Text(label="数据集文件夹")
+                src_name = gr.Text(label="原始标签名称")
+                det_name = gr.Text(label="目标标签名称")
+            with gr.Column():
+                result = gr.Text(label="处理结果", show_label=True, visible=True)
         with gr.Row():
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=rename_labels, inputs=[filename, src_name, det_name], outputs=result)
 
-demo.launch(server_name="127.0.0.1", share=True)
+demo.launch(server_name="127.0.0.1", share=False)
