@@ -10,6 +10,7 @@ from scripts.labelnoimg import check_and_delete_labels
 from scripts.batchrename import rename_files
 from scripts.cls_count import count_labels
 from scripts.rename_labels import rename_labels
+from scripts.cuhk2yolo import cuhk2yolo
 
 
 with gr.Blocks(title="数据集处理") as demo:
@@ -103,4 +104,14 @@ with gr.Blocks(title="数据集处理") as demo:
             predict_button = gr.Button(value="处理", variant='primary')
         predict_button.click(fn=rename_labels, inputs=[filename, src_name, det_name], outputs=result)
 
-demo.launch(server_name="127.0.0.1", share=False)
+    with gr.Tab(label="CUHK转YOLO"):
+        gr.Markdown("## CUHK转YOLO")
+        with gr.Row():
+            src_dir = gr.Text(label="CUHK标签文件夹")
+            det_dir = gr.Text(label="YOLO标签文件夹")
+            result = gr.Text(label="处理结果", show_label=True, visible=True)
+        with gr.Row():
+            predict_button = gr.Button(value="处理", variant='primary')
+        predict_button.click(fn=cuhk2yolo, inputs=[src_dir, det_dir], outputs=result)
+
+demo.launch(server_name="127.0.0.1", share=True)
